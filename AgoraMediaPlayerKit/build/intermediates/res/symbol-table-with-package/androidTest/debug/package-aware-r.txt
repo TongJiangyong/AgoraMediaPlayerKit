@@ -1,0 +1,2 @@
+tv.danmaku.ijk.media.player.test
+string ijkplayer_dummy

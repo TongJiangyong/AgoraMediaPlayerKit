@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="agora.io.agoramediaplayer.MainActivity">
+
+
+        <SurfaceView
+            android:id="@+id/video_test1"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+        <SurfaceView
+            android:id="@+id/video_test2"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+        <Button
+            android:id="@+id/start_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始所有" />
+
+        <Button
+            android:id="@+id/stop_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="停止所有" />
+        <Button
+            android:id="@+id/start_all_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始全部视频" />
+        <Button
+            android:id="@+id/start_audio_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始音频1" />
+
+        <Button
+            android:id="@+id/start_audio_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始音频2" />
+
+        <Button
+            android:id="@+id/start_audio_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始音频3" />
+
+        <Button
+            android:id="@+id/start_audio_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始音频4" />
+
+        <Button
+            android:id="@+id/start_audio_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始音频5" />
+
+        <Button
+            android:id="@+id/start_audio_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始音频6" />
+
+        <Button
+            android:id="@+id/start_audio_7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始音频7" />
+
+
+    </LinearLayout>
+</ScrollView>
