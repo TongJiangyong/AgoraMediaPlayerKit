@@ -26,13 +26,12 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+import io.agora.kit.mediaplayer.MediaInfoCallback;
+import io.agora.kit.mediaplayer.MediaPlayerKit;
+import io.agora.kit.mediaplayer.MediaPlayerKitEventHandler;
+import io.agora.kit.mediaplayer.mode.AudioTrackInfo;
+import io.agora.kit.mediaplayer.mode.VideoTrackInfo;
 
-import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-import tv.danmaku.ijk.media.player.MediaInfoCallback;
-import tv.danmaku.ijk.media.player.MediaPlayerKit;
-import tv.danmaku.ijk.media.player.MediaPlayerKitEventHandler;
-import tv.danmaku.ijk.media.player.mode.AudioTrackInfo;
-import tv.danmaku.ijk.media.player.mode.VideoTrackInfo;
 
 /**
  * Main activity -- entry point from Launcher.
@@ -53,24 +52,24 @@ public class MainActivity extends Activity {
     private Button audio6;
     private Button audio7;
 
-    private MediaPlayerKit ijkMediaPlayer1;
-    private MediaPlayerKit ijkMediaPlayer2;
-    private String JUstCan1 = "/sdcard/2222.mp4";
-    private String JUstCan2 = "/sdcard/3333.mp4";
+    private MediaPlayerKit agoaraMediaPlayer1;
+    private MediaPlayerKit agoraMediaPlayer2;
+    private String JUstCan1 = "rtmp://media3.sinovision.net:1935/live/livestream";
+    private String JUstCan2 = "rtmp://live.hkstv.hk.lxdns.com/live/hks1";
 
 
     private String[] audioUrls = new String[]{
-            "http://114.236.93.153:8080/download/audio/BeyondLightYear.mp3",
-            "http://114.236.93.153:8080/download/audio/P501_mos_pure.wav",
-            "http://114.236.93.153:8080/download/audio/3650_sound.3gp",
-            "http://114.236.93.153:8080/download/audio/04.%20David%20Bowie%20-%20Moonage%20Daydream.m4a",
-            "http://114.236.93.153:8080/download/audio/MrBean.3gp",
-            "http://114.236.93.153:8080/download/audio/Friday.aac",
-            "http://114.236.93.153:8080/download/audio/DJ%E9%9F%B3%E6%95%88.ogg"
+            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p",
+            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p",
+            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio2_mf_p",
+            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio3_mf_p",
+            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lryork_mf_p",
+            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrsolent_mf_p",
+            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrnorfolk_mf_p"
 
 
     };
-    private MediaPlayerKit[] ijkMediaAudioPlayers = new MediaPlayerKit[audioUrls.length];
+    private MediaPlayerKit[] agoraMediaAudioPlayers = new MediaPlayerKit[audioUrls.length];
 
     private ArrayList<MyAudioThread> myAudioThreads= new ArrayList<MyAudioThread>();
     private VideoThread videoThread;
@@ -95,7 +94,7 @@ public class MainActivity extends Activity {
         audio6= (Button)findViewById(R.id.start_audio_6);
         audio7= (Button)findViewById(R.id.start_audio_7);
         allVideo = (Button)findViewById(R.id.start_all_video);
-        InitIjk();
+        InitPlayer();
         start_bofang.setOnClickListener(onClickListener);
         stop_bofang.setOnClickListener(onClickListener);
 
@@ -121,13 +120,13 @@ public class MainActivity extends Activity {
                     }
                     break;
                 case R.id.stop_view:
-                    ijkMediaPlayer1.stop();
-                    ijkMediaPlayer2.stop();
-                    ijkMediaPlayer1.unload();
-                    ijkMediaPlayer2.unload();
+                    agoaraMediaPlayer1.stop();
+                    agoraMediaPlayer2.stop();
+                    agoaraMediaPlayer1.unload();
+                    agoraMediaPlayer2.unload();
                     for(int i=0;i<audioUrls.length;i++){
-                        ijkMediaAudioPlayers[i].stop();
-                        ijkMediaAudioPlayers[i].unload();
+                        agoraMediaAudioPlayers[i].stop();
+                        agoraMediaAudioPlayers[i].unload();
                         myAudioThreads.get(i).isStop = true;
                     }
                     videoThread.isStop = true;
@@ -140,10 +139,10 @@ public class MainActivity extends Activity {
                         allVideo.setTag(true);
                         allVideo.setText("停止所有视频");
                     }else{
-                        ijkMediaPlayer1.stop();
-                        ijkMediaPlayer2.stop();
-                        //ijkMediaPlayer1.unload();
-                        //ijkMediaPlayer2.unload();
+                        agoaraMediaPlayer1.stop();
+                        agoraMediaPlayer2.stop();
+                        agoaraMediaPlayer1.unload();
+                        agoraMediaPlayer2.unload();
                         videoThread.isStop = true;
                         videoThread2.isStop = true;
                         allVideo.setTag(false);
@@ -156,8 +155,8 @@ public class MainActivity extends Activity {
                         audio1.setTag(true);
                         audio1.setText("停止音频1");
                     }else{
-                        ijkMediaAudioPlayers[0].stop();
-                        ijkMediaAudioPlayers[0].unload();
+                        agoraMediaAudioPlayers[0].stop();
+                        agoraMediaAudioPlayers[0].unload();
                         myAudioThreads.get(0).isStop = true;
                         audio1.setTag(false);
                         audio1.setText("开始音频1");
@@ -169,8 +168,8 @@ public class MainActivity extends Activity {
                         audio2.setTag(true);
                         audio2.setText("停止音频2");
                     }else{
-                        ijkMediaAudioPlayers[1].stop();
-                        ijkMediaAudioPlayers[1].unload();
+                        agoraMediaAudioPlayers[1].stop();
+                        agoraMediaAudioPlayers[1].unload();
                         myAudioThreads.get(1).isStop = true;
                         audio2.setTag(false);
                         audio2.setText("开始音频2");
@@ -182,8 +181,8 @@ public class MainActivity extends Activity {
                         audio3.setTag(true);
                         audio3.setText("停止音频3");
                     }else{
-                        ijkMediaAudioPlayers[2].stop();
-                        ijkMediaAudioPlayers[2].unload();
+                        agoraMediaAudioPlayers[2].stop();
+                        agoraMediaAudioPlayers[2].unload();
                         myAudioThreads.get(2).isStop = true;
                         audio3.setTag(false);
                         audio3.setText("开始音频3");
@@ -195,8 +194,8 @@ public class MainActivity extends Activity {
                         audio4.setTag(true);
                         audio4.setText("停止音频4");
                     }else{
-                        ijkMediaAudioPlayers[3].stop();
-                        ijkMediaAudioPlayers[3].unload();
+                        agoraMediaAudioPlayers[3].stop();
+                        agoraMediaAudioPlayers[3].unload();
                         myAudioThreads.get(3).isStop = true;
                         audio4.setTag(false);
                         audio4.setText("开始音频4");
@@ -208,8 +207,8 @@ public class MainActivity extends Activity {
                         audio5.setTag(true);
                         audio5.setText("停止音频5");
                     }else{
-                        ijkMediaAudioPlayers[4].stop();
-                        ijkMediaAudioPlayers[4].unload();
+                        agoraMediaAudioPlayers[4].stop();
+                        agoraMediaAudioPlayers[4].unload();
                         myAudioThreads.get(4).isStop = true;
                         audio5.setTag(false);
                         audio5.setText("开始音频5");
@@ -221,8 +220,8 @@ public class MainActivity extends Activity {
                         audio6.setTag(true);
                         audio6.setText("停止音频6");
                     }else{
-                        ijkMediaAudioPlayers[5].stop();
-                        ijkMediaAudioPlayers[5].unload();
+                        agoraMediaAudioPlayers[5].stop();
+                        agoraMediaAudioPlayers[5].unload();
                         myAudioThreads.get(5).isStop = true;
                         audio6.setTag(false);
                         audio6.setText("开始音频6");
@@ -234,8 +233,8 @@ public class MainActivity extends Activity {
                         audio7.setTag(true);
                         audio7.setText("停止音频7");
                     }else{
-                        ijkMediaAudioPlayers[6].stop();
-                        ijkMediaAudioPlayers[6].unload();
+                        agoraMediaAudioPlayers[6].stop();
+                        agoraMediaAudioPlayers[6].unload();
                         myAudioThreads.get(6).isStop = true;
                         audio7.setTag(false);
                         audio7.setText("开始音频7");
@@ -247,15 +246,10 @@ public class MainActivity extends Activity {
         }
     };
 
-    private void InitIjk(){
-        Log.i("TJY","IjkMediaPlayer init");
-        IjkMediaPlayer.loadLibrariesOnce(null);
-        //IjkMediaPlayer.native_profileBegin("libijkplayer.so");
-        //IjkMediaPlayer.native_profileBegin("libijkffmpeg.so");
-       // IjkMediaPlayer.native_profileBegin("libijksdl.so");
-
-        ijkMediaPlayer1 = MediaPlayerKit.createMediaPlayerKit();
-        ijkMediaPlayer1.setEventHandler(new MediaPlayerKitEventHandler() {
+    private void InitPlayer(){
+        Log.i("TJY","AgoraMediaPlayer init");
+        agoaraMediaPlayer1 = MediaPlayerKit.createMediaPlayerKit();
+        agoaraMediaPlayer1.setEventHandler(new MediaPlayerKitEventHandler() {
             @Override
             public void onKitError(int errorCode, String errMsg) {
                 Log.i("TJY","onKitError:"+errorCode+" "+errMsg);
@@ -267,7 +261,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        ijkMediaPlayer1.setMediaInfoCallback(new MediaInfoCallback() {
+        agoaraMediaPlayer1.setMediaInfoCallback(new MediaInfoCallback() {
             @Override
             public void onAudioTrackInfoCallBack(AudioTrackInfo[] audioTrackInfos) {
                 Log.i("TJY","onAudioTrackInfoCallBack "+audioTrackInfos.length);
@@ -275,27 +269,27 @@ public class MainActivity extends Activity {
 
             @Override
             public void onVideoTrackInfoCallBack(VideoTrackInfo[] videoTrackInfos) {
-                Log.i("TJY","IjkMediaPlayer init "+videoTrackInfos.length);
+                Log.i("TJY","AgoraMediaPlayer init "+videoTrackInfos.length);
             }
         });
 
-        ijkMediaPlayer2 = MediaPlayerKit.createMediaPlayerKit();
+        agoraMediaPlayer2 = MediaPlayerKit.createMediaPlayerKit();
         for(int i=0;i<audioUrls.length;i++){
-            ijkMediaAudioPlayers[i] = MediaPlayerKit.createMediaPlayerKit();
+            agoraMediaAudioPlayers[i] = MediaPlayerKit.createMediaPlayerKit();
         }
         for(int i=0;i<audioUrls.length;i++){
-            myAudioThreads.add(new MyAudioThread(ijkMediaAudioPlayers[i],audioUrls[i]));
+            myAudioThreads.add(new MyAudioThread(agoraMediaAudioPlayers[i],audioUrls[i]));
         }
         videoThread = new VideoThread();
         videoThread2 = new VideoThread2();
-        Log.i("TJY","IjkMediaPlayer over");
+        Log.i("TJY","AgoraMediaPlayer over");
     }
 
     private SurfaceHolder.Callback callback = new SurfaceHolder.Callback() {
         @Override
         public void surfaceCreated(SurfaceHolder surfaceHolder) {
             Log.i("TJY","surfaceCreated "+surfaceHolder);
-            //ijkMediaPlayer.setDisplay(surfaceHolder);
+            //AgoraMediaPlayer.setDisplay(surfaceHolder);
         }
 
         @Override
@@ -317,9 +311,9 @@ public class MainActivity extends Activity {
         @Override
         public void run() {
             isStop = false;
-            ijkMediaPlayer1.load(JUstCan1,true);
-            ijkMediaPlayer1.setVideoView(surfaceView1.getHolder().getSurface());  //将视频画面输出到surface上
-            ijkMediaPlayer1.play();                                //开始播放
+            agoaraMediaPlayer1.load(JUstCan1,false);
+            agoaraMediaPlayer1.setVideoView(surfaceView1.getHolder().getSurface());  //将视频画面输出到surface上
+            agoaraMediaPlayer1.play();                                //开始播放
         }
     }
 
@@ -330,9 +324,9 @@ public class MainActivity extends Activity {
         @Override
         public void run() {
             isStop = false;
-            ijkMediaPlayer2.load(JUstCan2,true);
-            ijkMediaPlayer2.setVideoView(surfaceView2.getHolder().getSurface());  //将视频画面输出到surface上
-            ijkMediaPlayer2.play();                                //开始播放
+            agoraMediaPlayer2.load(JUstCan2,false);
+            agoraMediaPlayer2.setVideoView(surfaceView2.getHolder().getSurface());  //将视频画面输出到surface上
+            agoraMediaPlayer2.play();                                //开始播放
 
         }
     }
@@ -350,7 +344,7 @@ public class MainActivity extends Activity {
         public void run() {
             Log.i("TJY","MyAudioThread: path"+path);
             isStop = false;
-            this.mediaPlayerKit.load(path,true);
+            this.mediaPlayerKit.load(path,false);
             this.mediaPlayerKit.play();                                //开始播放
         }
     }
