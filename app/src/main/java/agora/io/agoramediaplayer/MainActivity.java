@@ -54,17 +54,18 @@ public class MainActivity extends Activity {
 
     private MediaPlayerKit agoaraMediaPlayer1;
     private MediaPlayerKit agoraMediaPlayer2;
-    private String JUstCan1 = "rtmp://media3.sinovision.net:1935/live/livestream";
-    private String JUstCan2 = "rtmp://live.hkstv.hk.lxdns.com/live/hks1";
+    private String JUstCan1 = "rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov";
+    private String JUstCan2 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
 
+    //直播视频
 
     private String[] audioUrls = new String[]{
-            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p",
-            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p",
-            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio2_mf_p",
-            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio3_mf_p",
-            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lryork_mf_p",
-            "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrsolent_mf_p",
+            "http://mpge.5nd.com/2019/2019-6-25/92274/1.mp3",
+            "http://mpge.5nd.com/2019/2019-6-25/92274/2.mp3p",
+            "http://mpge.5nd.com/2019/2019-6-25/92279/1.mp",
+            "http://mpge.5nd.com/2019/2019-6-25/92278/1.mp3",
+            "http://mpge.5nd.com/2019/2019-6-25/92276/1.mp3",
+            "http://mpge.5nd.com/2019/2019-6-25/92275/2.mp3",
             "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_lrnorfolk_mf_p"
 
 
